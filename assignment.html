@@ -269,13 +269,13 @@ dim(training)</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (3 fold) 
-## Summary of sample sizes: 7850, 7851, 7851 
+## Summary of sample sizes: 7851, 7851, 7850 
 ## Resampling results across tuning parameters:
 ## 
 ##   mtry  Accuracy   Kappa    
-##    2    0.9894702  0.9866769
-##   28    0.9944802  0.9930175
-##   54    0.9901494  0.9875385
+##    2    0.9899796  0.9873235
+##   28    0.9947350  0.9933396
+##   54    0.9922724  0.9902242
 ## 
 ## Accuracy was used to select the optimal model using the largest value.
 ## The final value used for the model was mtry = 28.</code></pre>
@@ -286,39 +286,43 @@ result </code></pre>
 ## 
 ##           Reference
 ## Prediction    A    B    C    D    E
-##          A 2231    3    0    0    0
-##          B    0 1511    9    0    0
-##          C    0    3 1359   10    0
-##          D    0    1    0 1275    9
-##          E    1    0    0    1 1433
+##          A 2231    6    0    0    0
+##          B    0 1508    6    0    0
+##          C    0    4 1362    3    0
+##          D    0    0    0 1283    8
+##          E    1    0    0    0 1434
 ## 
 ## Overall Statistics
 ##                                           
-##                Accuracy : 0.9953          
-##                  95% CI : (0.9935, 0.9967)
+##                Accuracy : 0.9964          
+##                  95% CI : (0.9948, 0.9976)
 ##     No Information Rate : 0.2845          
 ##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
 ##                                           
-##                   Kappa : 0.994           
+##                   Kappa : 0.9955          
 ##                                           
 ##  Mcnemar&#39;s Test P-Value : NA              
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity            0.9996   0.9954   0.9934   0.9914   0.9938
-## Specificity            0.9995   0.9986   0.9980   0.9985   0.9997
-## Pos Pred Value         0.9987   0.9941   0.9905   0.9922   0.9986
-## Neg Pred Value         0.9998   0.9989   0.9986   0.9983   0.9986
+## Sensitivity            0.9996   0.9934   0.9956   0.9977   0.9945
+## Specificity            0.9989   0.9991   0.9989   0.9988   0.9998
+## Pos Pred Value         0.9973   0.9960   0.9949   0.9938   0.9993
+## Neg Pred Value         0.9998   0.9984   0.9991   0.9995   0.9988
 ## Prevalence             0.2845   0.1935   0.1744   0.1639   0.1838
-## Detection Rate         0.2843   0.1926   0.1732   0.1625   0.1826
-## Detection Prevalence   0.2847   0.1937   0.1749   0.1638   0.1829
-## Balanced Accuracy      0.9995   0.9970   0.9957   0.9950   0.9967</code></pre>
+## Detection Rate         0.2843   0.1922   0.1736   0.1635   0.1828
+## Detection Prevalence   0.2851   0.1930   0.1745   0.1645   0.1829
+## Balanced Accuracy      0.9992   0.9962   0.9973   0.9982   0.9971</code></pre>
 <pre class="r"><code>test_result &lt;- predict(rf, test)
 test_result</code></pre>
 <pre><code>##  [1] B A B A A E D B A A B C B A E E A B B B
 ## Levels: A B C D E</code></pre>
 <p>Random Forest Model has the high accuracy rate (0.9983), so I used this model to answer the quiz questions. The result is shown above.</p>
+<pre class="r"><code>sample_error &lt;- 1 - as.numeric(result$overall)
+sample_error[1]</code></pre>
+<pre><code>## [1] 0.003568697</code></pre>
+<p>Estimated out-of-sample error is 0.3%.</p>
 </div>
 </div>
 </div>

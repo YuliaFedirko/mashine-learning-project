@@ -90,3 +90,9 @@ test_result
 ```
 Random Forest Model has the high accuracy rate (0.9983), so I used this model to answer the quiz questions. The result is shown above.
 
+```{r}
+sample_error <- 1 - as.numeric(result$overall)
+sample_error[1]
+```
+Estimated out-of-sample error is 0.3%.
+
