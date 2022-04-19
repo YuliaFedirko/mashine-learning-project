@@ -1,0 +1,92 @@
+# Coursera Practical Machine Learning Final Project
+## Yuliia Fedirko
+### 19 April 2022
+
+```{r}
+library(ggplot2)
+library(caret)
+library(dplyr)
+library(tidyverse)
+library(randomForest)
+
+```
+
+
+```{r}
+train <-read.csv('pml-training.csv')
+test <-read.csv('pml-testing.csv')
+```
+
+#### Explore
+```{r}
+p<-ggplot(train, aes(x=classe)) + 
+  geom_bar(color="white", fill="lightblue")
+
+p
+```
+
+
+#### Data slicing
+```{r}
+
+inTrain <- createDataPartition(train$classe, p = .6, list = FALSE)
+training <- train[inTrain,]
+testing <- train[-inTrain,]
+dim(training)
+dim(testing)
+
+```
+
+#### Preprocessing
+Removing NA columns,  and no factor (up to 5 column)
+
+```{r}
+
+
+#remove columns with NA > 50%
+training[training==""]<-NA
+testing[testing==""]<-NA
+
+training <- training %>% discard(~all(is.na(.) | .=="#DIV/0!"))
+testing <- testing %>% discard(~all(is.na(.) | .=="#DIV/0!"))
+
+
+threshold<-0.5 #for a 50% cut-off
+training <- training %>% select(where(~mean(is.na(.))< threshold))
+testing <- testing %>% select(where(~mean(is.na(.))< threshold))
+
+# remove ID variables
+training <- training[,-(1:5)]
+testing <- testing[,-(1:5)]
+
+dim(training)
+dim(testing)
+```
+After cleaning data - only 55 attributes are valuable for our analysis.
+
+
+#### Random Forest model (using 3-folds Cross Validation).
+
+```{r}
+
+rf  <- train( classe ~.,
+                   data = training,
+                   method = "rf",
+                   trControl = trainControl(method="cv",number=3))
+```
+
+```{r}
+rf
+```
+
+```{r}
+prediction <- predict(rf, testing)
+result  <- confusionMatrix(prediction, as.factor(testing$classe))
+result 
+```
+```{r}
+test_result <- predict(rf, test)
+test_result
+```
+Random Forest Model has the high accuracy rate (0.9983), so I used this model to answer the quiz questions. The result is shown above.
+
